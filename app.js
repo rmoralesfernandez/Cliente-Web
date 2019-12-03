@@ -4,8 +4,12 @@ $(document).ready(function()
 {
     url_base = "http://localhost:8888/Rick/clase-laravel/public/index.php";
 
-    $("button").click(function(){
+    $("#button").click(function(){
         register();
+    });
+
+    $("#botonLibros").click(function(){
+        books();
     });
 });
 // window.onload = cargar;
@@ -21,6 +25,13 @@ $(document).ready(function()
         var name = $('#name').val();
         var email = $('#email').val();
         var password = $('#password').val();
+
+
+
+        // if(name == null)
+        // {
+
+        // }
 
         var data_user = {
             "name":name,
@@ -40,7 +51,23 @@ $(document).ready(function()
             data: data,
             dataType: 'json',
             success: function(response){
-                console.log('trace');
+                console.log(response.token);
+                sessionStorage.setItem('token', response.token);
+            }
+          });
+    }
+
+    function books()
+    {
+        $.ajax({
+            url: url_base + "/api/show",
+            type: 'GET',
+            headers: {
+                'Authorization': sessionStorage.getItem('token')
+            },
+            dataType: 'json',
+            success: function(response){
+                console.log(response.books);
             }
           });
     }
